@@ -2,9 +2,9 @@ const express = require('express')
 const UsersRouter = express.Router()
 const bodyParser = express.json()
 const UsersService = require('./UsersService')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = require('../config')
+// const bcrypt = require('bcryptjs')
+// const jwt = require('jsonwebtoken')
+// const { JWT_SECRET } = require('../config')
 const logger = require('../logger.js')
 //xss
 
