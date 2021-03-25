@@ -10,8 +10,14 @@ const logger = require('../logger.js')
 
 UsersRouter
     .route('/api/test')
-    .get(bodyParser, (req,res,next) => {
-        res.send("working").status(200)
+    .get((req,res,next) => {
+        res.status(200).send("working")
+        next()
+    })
+    .post(bodyParser, (req,res,next) => {
+        const { title } = req.body
+        res.status(201).send(title)
+        next()
     })
 
 module.exports = UsersRouter
