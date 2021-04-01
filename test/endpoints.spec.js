@@ -1,27 +1,8 @@
-const { expect } = require('chai')
+//const { expect } = require('chai')
 const knex = require('knex')
 const supertest = require('supertest')
 const app = require('../src/app')
 const { makeTestDataArray } = require('./testEndpoint.fixtures')
-
-describe('GET /', () => {
-  it('respond with Hello, world!', () => {
-      return supertest(app)
-          .get('/')
-          .expect('Hello, world!')
-          .expect(200);
-  })
-  it('respond 404', () => {
-      return supertest(app)
-          .get('/err')
-          .expect(404)
-  })
-  it('should respond working', () => {
-      return supertest(app)
-          .get('/api/test')
-          .expect(200, 'working')
-  })
-})
 
 describe('testEndpoints', function() {
   let db
@@ -40,9 +21,9 @@ describe('testEndpoints', function() {
 
   afterEach('cleanup', () => db.raw('TRUNCATE testTable RESTART IDENTITY CASCADE'))
 
-//1 DESCRIBE - get endpoint
-  describe(' 1 GET /api/testEndpoint', () => {
-//1A - CONTEXT to endpoint - given no data in the db
+//---> 1 DESCRIBE - GET <--//
+  describe('1 - GET /api/testEndpoint', () => {
+  //1A - CONTEXT to endpoint - given no data in the db
         context('1A Given no testData', () => {
           it('responds with 200 and an empty list', () => {
             return supertest(app)
@@ -50,7 +31,7 @@ describe('testEndpoints', function() {
               .expect(200, [])
       })
     })
-//1B - CONTEXT to people endpoint - given there are people in the db
+  //1B - CONTEXT to people endpoint - given there is data in the db
     context('1B Given there is testData in the database', () => {
       const DataTest = makeTestDataArray()
       beforeEach('insert testData', () => {
@@ -70,9 +51,9 @@ describe('testEndpoints', function() {
     })
   })
 
-//2 DESCRIBE - testData by id    
-describe(` 2 GET /api/data/:data_id`, () => {
-  //2A CONTEXT - to person by id - given no person id in db
+//---> 2 DESCRIBE - test data by id <--//    
+describe(`2 - GET /api/data/:data_id`, () => {
+  //2A CONTEXT - data by id - given no dataid in db
       context(`2A Given no data`, () => {
         it(`responds with 404`, () => {
           const data_id = 123456
@@ -94,7 +75,7 @@ describe(` 2 GET /api/data/:data_id`, () => {
         })
       })
       
-    it('responds with 200 and the specified datat', () => {
+    it('responds with 200 and the specified data', () => {
       const dataId = 2
       const expectedData = testDataTest[dataId - 1]
       return supertest(app)
@@ -103,9 +84,8 @@ describe(` 2 GET /api/data/:data_id`, () => {
       })
     })
   })
-//3 DESCRIBE - POST person by id  
-  describe(` 3 POST /api/people`, () => {
-
+//---> 3 DESCRIBE - POST data by id  <--// 
+  describe(`3 - POST /api/data`, () => {
     it(`creates a new obj, responding with 201 and the new obj`,  function() {
       this.retries(3)
       const newPerson = {
@@ -149,7 +129,8 @@ describe(` 2 GET /api/data/:data_id`, () => {
       })
     })
   })
-//4 DESCRIBE - DELETE date by id  
+
+//---> 4 DESCRIBE - DELETE date by id <--// 
   describe(`4 DELETE /api/test/:data_id`, () => {
     //4A CONTEXT - given there is no data by id to delete
     context(`4A Given no data`, () => {
@@ -160,7 +141,7 @@ describe(` 2 GET /api/data/:data_id`, () => {
           .expect(404, { error: { message: `data not found` } })
         })
       })
-    //4B CONTEXT - given there are people by id to delete
+    //4B CONTEXT - given there is data by id to delete
     context('4B Given there is data in the database', () => {
       const testDataTest = makeTestDataArray()
   
@@ -187,8 +168,8 @@ describe(` 2 GET /api/data/:data_id`, () => {
         })
       })
     })
-  //5 DESCRIBE - PATCH data by id 
-  describe(`5 PATCH /api/test/:data_id`, () => {
+//---> 5 DESCRIBE - PATCH data by id <--//
+  describe(`5 - PATCH /api/test/:data_id`, () => {
     //5A CONTEXT given there is no by id
     context(`5A Given no data`, () => {
       it(`responds with 404`, () => {
@@ -198,7 +179,7 @@ describe(` 2 GET /api/data/:data_id`, () => {
           .expect(404, { error: { message: `data not found` } })
       })
     })
-    //5B CONTEXT given there is datta in the database
+    //5B CONTEXT given there is data in the database
     context('5B Given there are people in the database', () => {
       const testDataTest = makeTestDataArray()
         
