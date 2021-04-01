@@ -4,6 +4,25 @@ const supertest = require('supertest')
 const app = require('../src/app')
 const { makeTestDataArray } = require('./testEndpoint.fixtures')
 
+describe('GET /', () => {
+  it('respond with Hello, world!', () => {
+      return supertest(app)
+          .get('/')
+          .expect('Hello, world!')
+          .expect(200);
+  })
+  it('respond 404', () => {
+      return supertest(app)
+          .get('/err')
+          .expect(404)
+  })
+  it('should respond working', () => {
+      return supertest(app)
+          .get('/api/test')
+          .expect(200, 'working')
+  })
+})
+
 describe('testEndpoints', function() {
   let db
 
